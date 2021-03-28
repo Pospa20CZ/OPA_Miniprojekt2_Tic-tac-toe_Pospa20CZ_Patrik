@@ -1,0 +1,182 @@
+# 1. Program pozdraví uživatele
+# 2. Vypíše v krátkosti pravidla hry
+# 3. Zobrazí hrací plochu
+# 4. Vyzve prvního hráče, aby zvolil pozici pro umístění hracího kamene
+# 5.Pokud hráč zadá jiné číslo, než je nabídka hracího pole, program jej upozorní.
+# 6. Pokud hráč zadá jiný vstup, než číselný, program jej opět upozorní.
+# 7. Pokud se na vybraném poli nachází hrací kámen druhého hráče, program jej upozorní, že je pole obsazené
+# 8. Jakmile hráč úspěšně vybere pole, zobrazíme nový stav hrací plochy
+# 9. Program vyhodnocuje, jestli horizontálně/vertikálně/diagonálně není některý hrací kámen tříkrát. Pokud ano, vyhrává hráč, kterému tyto tři kameny patří
+# 10. Pokud nezbývá žádné volné hrací pole a žádný hráč nevyhrál, jde o remízu.
+
+# Tic-Tac-Toe hra pro dva hráče v Pythonu.
+
+hraci_plocha = {'1': ' ', '2': ' ', '3': ' ',
+            '4': ' ', '5': ' ', '6': ' ',
+            '7': ' ', '8': ' ', '9': ' '}
+
+hraci_klice = []
+
+for klic in hraci_plocha:
+    hraci_klice.append(klic)
+
+ODDELOVAC = 45 * "="
+ODDELOVAC2 = 45 * "-"
+mezera = '{0:12}'.format(" ")
+mezera2 = '{0:9}'.format(" ")
+mezera3 = '{0:5}'.format(" ")
+
+def vytisknidesku(hraci_policko):
+    print(mezera, "+---+---+---+")
+    print(mezera, "|", hraci_policko['1'] + ' | ' + hraci_policko['2'] + ' | ' + hraci_policko['3'], "|")
+    print(mezera, "+---+---+---+")
+    print(mezera, "|", hraci_policko['4'] + ' | ' + hraci_policko['5'] + ' | ' + hraci_policko['6'], "|")
+    print(mezera, "+---+---+---+")
+    print(mezera, "|", hraci_policko['7'] + ' | ' + hraci_policko['8'] + ' | ' + hraci_policko['9'], "|")
+    print(mezera, "+---+---+---+")
+
+
+# Uvitaní a popis hry
+
+print("Vítejte u hry Tic Tac Toe")
+print(ODDELOVAC)
+print(mezera, "PRAVIDLA HRY:")
+print("Každý hráč může umístit jednu značku (kámen) \nza kolo na mřížce 3x3. Vítězem se stává, \nkterému se podaří umístit tři z nich.")
+print("Výhra může být:\n* horizontálně\n* vertikálně\n* diagonálně")
+print(mezera3, "Označení pole hracími čísly")
+print(mezera, "+---+---+---+")
+print(mezera, "|" + ' 1' + ' |' + ' 2 ' + '| ' + '3 ' + "|")
+print(mezera, "+---+---+---+")
+print(mezera, "|" + ' 4' + ' |' + ' 5 ' + '| ' '6 ' + "|")
+print(mezera, "+---+---+---+")
+print(mezera, "|" + ' 7' + ' |' + ' 8 ' + '| ' + '9 ' + "|")
+print(mezera, "+---+---+---+")
+
+print(ODDELOVAC)
+print(mezera2, "!Hra právě začíná!")
+print(ODDELOVAC2)
+
+
+
+
+def hra():
+    tah = 'X'
+    pocet = 0
+
+    for i in range(1, 10):
+        vytisknidesku(hraci_plocha)
+        print(ODDELOVAC)
+        print("Hráč " + tah + " | Prosím o tvůj tah: ")
+
+        pohyb = input("Zadejte: ")
+        # Pokud hráč zadá jiný vstup, než číselný, program jej opět upozorní.
+        if pohyb.isdigit():
+            print(pohyb)
+        else:
+            print("Nemůže být vloženo žádné písmeno ani znak. \nZadat se dají jenom čísla 1 - 9. \nJaké hrací políčko si vybereš?")
+            continue
+        # Pokud hráč zadá jiné číslo, než je nabídka hracího pole, program jej upozorní.
+        pohyb2 = int(pohyb)
+        if pohyb2 in range(1, 10):
+
+            print()
+            print(ODDELOVAC)
+        else:
+            print(ODDELOVAC)
+            print("Toto číslo je větší než počet políček.\nJaké hrací políčko si vybereš?")
+            print(ODDELOVAC)
+            continue
+
+        # Pokud někdo zadá stejné pole podruhé, tak ho upozorní text
+        if hraci_plocha[pohyb] == ' ':
+            hraci_plocha[pohyb] = tah
+            pocet += 1
+
+        else:
+            print("Toto místo už je obsazeno.\nJaké hrací políčko si vybereš?")
+            continue
+
+
+
+        # Hráč X nebo O může vyhrát, pokud dohromady ma 3 neprerusene znaky u sebe.
+        if pocet >= 5:
+            if hraci_plocha['7'] == hraci_plocha['8'] == hraci_plocha['9'] != ' ':
+                vytisknidesku(hraci_plocha)
+
+                print(ODDELOVAC)
+                print("Gratulace, hráč " + tah + " VYHRÁL!")
+                print(ODDELOVAC)
+                break
+            elif hraci_plocha['4'] == hraci_plocha['5'] == hraci_plocha['6'] != ' ':
+                vytisknidesku(hraci_plocha)
+
+                print(ODDELOVAC)
+                print("Gratulace, hráč " + tah + " VYHRÁL!")
+                print(ODDELOVAC)
+                break
+            elif hraci_plocha['1'] == hraci_plocha['2'] == hraci_plocha['3'] != ' ':
+                vytisknidesku(hraci_plocha)
+
+                print(ODDELOVAC)
+                print("Gratulace, hráč " + tah + " VYHRÁL!")
+                print(ODDELOVAC)
+                break
+            elif hraci_plocha['1'] == hraci_plocha['4'] == hraci_plocha['7'] != ' ':
+                vytisknidesku(hraci_plocha)
+
+                print(ODDELOVAC)
+                print("Gratulace, hráč " + tah + " VYHRÁL!")
+                print(ODDELOVAC)
+                break
+            elif hraci_plocha['2'] == hraci_plocha['5'] == hraci_plocha['8'] != ' ':
+                vytisknidesku(hraci_plocha)
+
+                print(ODDELOVAC)
+                print("Gratulace, hráč " + tah + " VYHRÁL!")
+                print(ODDELOVAC)
+                break
+            elif hraci_plocha['3'] == hraci_plocha['6'] == hraci_plocha['9'] != ' ':
+                vytisknidesku(hraci_plocha)
+
+                print(ODDELOVAC)
+                print("Gratulace, hráč " + tah + " VYHRÁL!")
+                print(ODDELOVAC)
+                break
+            elif hraci_plocha['7'] == hraci_plocha['5'] == hraci_plocha['3'] != ' ':
+                vytisknidesku(hraci_plocha)
+
+                print(ODDELOVAC)
+                print("Gratulace, hráč " + tah + " VYHRÁL!")
+                print(ODDELOVAC)
+                break
+            elif hraci_plocha['1'] == hraci_plocha['5'] == hraci_plocha['9'] != ' ':
+                vytisknidesku(hraci_plocha)
+
+                print(ODDELOVAC)
+                print("Gratulace, hráč " + tah + " VYHRÁL!")
+                print(ODDELOVAC)
+                break
+
+                # Remíza
+        if pocet == 9:
+            print("Remíza!!\nKONEC HRY.")
+
+        # Tah prvního hráče a pozdeji druhého hráče
+        if tah == 'X':
+            tah = 'O'
+        else:
+            tah = 'X'
+
+            # Zeptáme se hráče, pokud chce restartovat hru.
+    restart = input("Chcete hrát znova? (a/A nebo n/N): ")
+    if restart == "a" or restart == "A":
+        for klic in hraci_klice:
+            hraci_plocha[klic] = " "
+
+        hra()
+    else:
+        exit()
+
+
+if __name__ == "__main__":
+    hra()
